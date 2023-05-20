@@ -12,9 +12,20 @@ function inputGenerated() {
 </script>
 
 <template>
-  <v-form @submit.prevent="inputGenerated">
-    <v-btn type="submit"> Random </v-btn>
+  <v-form class="alg-form" @submit.prevent="inputGenerated">
+    <v-btn
+      type="submit"
+      block
+      elevation="24"
+    >
+      Random
+    </v-btn>
   </v-form>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.alg-form {
+  width: 100%;
+  padding: 1rem;
+}
+</style>
