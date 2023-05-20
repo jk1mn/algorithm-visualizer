@@ -1,50 +1,44 @@
 <script setup lang="ts">
-import { onUpdated, ref } from 'vue';
+import { onUpdated, ref, type ComponentPublicInstance } from 'vue';
 
 defineProps<{
   logs: string[];
 }>();
 
-const container = ref<HTMLDivElement | null>(null);
+const container = ref<ComponentPublicInstance | null>(null);
 
 onUpdated(() => {
-  container.value?.scroll({ top: container.value?.scrollHeight });
+  container.value?.$el?.scroll({ top: container.value?.$el?.scrollHeight });
 });
 </script>
 
 <template>
-  <div class="logs" ref="container">
-    <v-list class="logs__list">
-      <v-list-item
-        v-for="(log, index) in logs"
-        :key="index"
-        :title="log"
-        class="logs__list-item"
-      />
-    </v-list>
-  </div>
+  <v-list ref="container" class="logs">
+    <v-list-item
+      v-for="(log, index) in logs"
+      :key="index"
+      :title="log"
+      class="logs__item"
+    />
+  </v-list>
 </template>
 
 <style lang="scss" scoped>
 .logs {
-  background-color: var(--vt-c-green);
   border-radius: 1rem;
-  height: 15rem;
+  height: 200px;
   padding: 1rem 0;
-  overflow-y: scroll;
-
-  @media (min-width: 641px) {
-    margin-left: 3rem;
-    margin-right: 3rem;
-  }
-}
-
-.logs__list {
   margin: 0;
+  overflow-y: auto;
 }
 
-.logs__list-item {
+.logs__item {
   padding: 0.5rem 1rem;
-  border-bottom: 1px solid var(--vt-c-cream);
+  border-bottom: 1px solid #424242;
+
+  :deep(.v-list-item-title) {
+    font-size: 0.94em;
+    line-height: 1rem;
+  }
 }
 </style>

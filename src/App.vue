@@ -3,7 +3,7 @@ import Navigation from '@/components/layout/Navigation.vue';
 </script>
 
 <template>
-  <v-app>
+  <v-app color="blue-grey-darken-2">
     <Navigation />
 
     <v-main>

@@ -19,10 +19,10 @@ const input = toRef(props, 'input');
 const maxNumber = computed(() => Math.max(...input.value.numbers));
 
 watch(
-  () => props.position,
-  (current, previous) => {
-    const step =
-      current > previous ? props.steps[current] : props.steps[previous];
+  () => props.position, (current, previous) => {
+    const step = current > previous
+      ? props.steps[current]
+      : props.steps[previous];
 
     if (step.payload?.changes) {
       swap(
@@ -39,58 +39,45 @@ const minItemHeight = maxItemHeight * 0.2;
 </script>
 
 <template>
-  <section class="view">
-    <ListItemsSwapTransition class="sort-list">
-      <li
-        v-for="(num, index) in input.numbers"
-        :key="index"
-        class="sort-list__item"
-        :class="{
-          'sort-list__item_highlighted': steps[position].payload?.highlightedIndexes?.includes(index),
-          'sort-list__item_processed': steps[position].payload?.lastUnsortedIndex !== undefined
-            && steps[position].payload!.lastUnsortedIndex < index,
-        }"
-        :style="{
-          height:
-            minItemHeight +
-            (num * (maxItemHeight - minItemHeight)) / maxNumber +
-            'px',
-        }"
-      >
-        {{ num }}
-      </li>
-    </ListItemsSwapTransition>
-  </section>
+  <ListItemsSwapTransition class="sort-list">
+    <li
+      v-for="(num, index) in input.numbers"
+      :key="index"
+      class="sort-list__item"
+      :class="{
+        'sort-list__item_highlighted': steps[position].payload?.highlightedIndexes?.includes(index),
+        'sort-list__item_processed': steps[position].payload?.lastUnsortedIndex !== undefined
+          && steps[position].payload!.lastUnsortedIndex < index,
+      }"
+      :style="{
+        height:
+          minItemHeight +
+          (num * (maxItemHeight - minItemHeight)) / maxNumber +
+          'px',
+      }"
+    >
+      {{ num }}
+    </li>
+  </ListItemsSwapTransition>
 </template>
 
 <style lang="scss" scoped>
-.view {
-  height: 200px;
-  display: flex;
-  align-items: end;
-  justify-content: center;
-  padding-bottom: 1.5rem;
-  border-top-left-radius: 1rem;
-  border-top-right-radius: 1rem;
-  background-color: var(--vt-c-pink);
-}
-
 .sort-list {
   display: flex;
   align-items: flex-end;
   justify-content: center;
   gap: 0.5rem;
-  font-size: 1vmax;
+  font-size: 0.8em;
 
-  --color-list-items: #e5f1b5;
-  --color-list-items-processed: #8cdba0;
-  --color-list-items-active: rgb(241 146 78 / 65%);
+  --color-list-items: #644d25;
+  --color-list-items-processed: #247c40ad;
+  --color-list-items-active: rgb(90 129 173 / 65%);
 }
 
 .sort-list__item {
   display: flex;
   flex-flow: column-reverse;
-  min-width: 5%;
+  width: 1.1rem;
   background-color: var(--color-list-items);
   padding-left: 1px;
   padding-right: 1px;

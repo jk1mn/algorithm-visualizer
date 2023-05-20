@@ -15,12 +15,11 @@ const preview = ref(null);
 const form = ref(null);
 
 watchEffect(() => {
-  algRoute.value.getPreview().then((component) => {
-    console.log(component, component?.default);
+  algRoute.value?.getPreview().then((component) => {
     preview.value = markRaw(component.default);
   });
 
-  algRoute.value.getForm().then((component) => {
+  algRoute.value?.getForm().then((component) => {
     form.value = markRaw(component.default);
   });
 });

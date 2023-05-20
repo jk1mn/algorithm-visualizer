@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import type { Component } from 'vue';
+import { type Component, onBeforeMount } from 'vue';
+
+import { getRandomList } from '@/modules/algorithm/utility/random';
+import { SortNumericArrayInput } from '@/modules/algorithm/domain/dto/input/sort-numeric-array-input';
 
 import Log from './Log.vue';
 import ToolBar from './ToolBar.vue';
@@ -15,7 +18,7 @@ const props = defineProps<{
   viewModel: ViewModel<AlgorithmType>;
 }>();
 
-function inputGenerated(input: InputDataType<AlgorithmType>) {
+function generateSolution(input: InputDataType<AlgorithmType>) {
   props.viewModel.generateSolution(props.algorithmType, input);
 }
 
@@ -34,6 +37,10 @@ function back() {
 function forward() {
   props.viewModel.toNextStep();
 }
+
+onBeforeMount(() => {
+  generateSolution(new SortNumericArrayInput(getRandomList()));
+});
 </script>
 
 <template>
@@ -44,18 +51,20 @@ function forward() {
       </v-col>
     </v-row>
 
-    <v-row>
-      <v-col :cols="7">
+    <v-row class="visualize-container">
+      <v-col cols="12" md="7" class="flex-column">
         <template v-if="previewComponent && viewModel.input.value">
-          <component
-            :is="previewComponent"
-            :input="viewModel.input.value"
-            :steps="viewModel.solution.value?.steps"
-            :position="viewModel.position.value"
-          />
-          <div>
+          <v-sheet height="220" class="visualize-area">
+            <component
+              :is="previewComponent"
+              :input="viewModel.input.value"
+              :steps="viewModel.solution.value?.steps"
+              :position="viewModel.position.value"
+            />
+          </v-sheet>
+          <v-sheet class="visualize-current-action">
             {{ viewModel.solution.value?.steps[viewModel.position.value]?.log }}
-          </div>
+          </v-sheet>
           <ToolBar
             :playing="viewModel.playing.value"
             @back="back"
@@ -63,26 +72,49 @@ function forward() {
             @play="play"
             @pause="pause"
           />
+          <Log :logs="viewModel.logs.value" />
         </template>
       </v-col>
 
-      <v-spacer></v-spacer>
-
-      <v-col :cols="4">
-        <v-sheet width="300" class="mx-auto">
+      <v-col md="4" cols="12">
+        <v-sheet
+          min-height="100"
+          class="mx-auto form-container"
+        >
           <component
             v-if="formComponent"
             :is="formComponent"
-            @input-generated="inputGenerated"
+            @input-generated="generateSolution"
           />
         </v-sheet>
       </v-col>
     </v-row>
-
-    <v-row>
-      <v-col :cols="7">
-        <Log :logs="viewModel.logs.value" />
-      </v-col>
-    </v-row>
   </v-container>
 </template>
+
+<style lang="scss" scoped>
+.visualize-container {
+  font-size: 14px;
+}
+
+.visualize-area {
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  overflow-x: auto;
+}
+
+.visualize-current-action {
+  height: 36px;
+  padding: 0.5rem;
+  text-align: center;
+}
+
+.form-container {
+  display: flex;
+  align-items: center;
+  border-radius: 1rem;
+}
+</style>
