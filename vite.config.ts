@@ -18,16 +18,5 @@ export default defineConfig({
     dirStyle: 'nested',
     script: 'async',
   },
-  // worker: {
-  //   format: 'es',
-  // },
-  // build: {
-  //   rollupOptions: {
-  //     output: {
-  //       format: 'esm',
-  //     },
-  //   },
-  // },
-  // base: process.env.node_env === 'production' ? '/algorithm-visualizer/' : '/',
   base: '/algorithm-visualizer/',
 });
