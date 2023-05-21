@@ -1,13 +1,10 @@
-import {
-  createWebHistory,
-  createRouter,
-  type RouteLocationNormalized,
-  type NavigationGuardNext,
-} from 'vue-router';
+import type { RouterOptions } from 'vite-ssg';
+import type { RouteRecordRaw, RouteLocationNormalized, NavigationGuardNext } from 'vue-router';
+
 import Home from '@/views/Home.vue';
 import algorithmRoutes from '@/router/algorithm-routes';
 
-export const routes = [
+const routes: RouteRecordRaw[] = [
   {
     path: '/',
     component: Home,
@@ -30,9 +27,9 @@ export const routes = [
   },
 ];
 
-const router = createRouter({
-  history: createWebHistory(),
+export const options = (): RouterOptions => ({
+  base: import.meta.env.BASE_URL,
   routes,
 });
 
-export default router;
+export default options();

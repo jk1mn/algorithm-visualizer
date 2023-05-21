@@ -6,11 +6,11 @@ import '@mdi/font/css/materialdesignicons.css';
 
 import '@/assets/css/main.scss';
 import App from './App.vue';
-import router, { routes } from './router';
+import router from './router';
 
 export const createApp = ViteSSG(
   App,
-  { routes },
+  router,
   ({ app }) => {
     const vuetify = createVuetify({
       theme: {
