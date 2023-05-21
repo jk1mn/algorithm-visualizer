@@ -7,7 +7,7 @@ import {
 import Home from '@/views/Home.vue';
 import algorithmRoutes from '@/router/algorithm-routes';
 
-const routes = [
+export const routes = [
   {
     path: '/',
     component: Home,
