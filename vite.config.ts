@@ -18,5 +18,8 @@ export default defineConfig({
     dirStyle: 'nested',
     script: 'async',
   },
+  ssr: {
+    noExternal: ['vuetify'],
+  },
   base: '/algorithm-visualizer/',
 });
