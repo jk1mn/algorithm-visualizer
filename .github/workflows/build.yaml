@@ -4,38 +4,41 @@ on:
   push:
     branches: [dev]
   workflow_dispatch:
+  
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+  
+concurrency:
+  group: 'pages'
+  cancel-in-progress: true
 
 jobs:
   deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Setup Node.js v16.x
-        uses: actions/setup-node@v1
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up Node
+        uses: actions/setup-node@v3
         with:
-          node-version: '16.x'
-
-      - name: Install
-        run: npm ci
-
+          node-version: 18
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm install
       - name: Build
         run: npm run build
-
-      - name: deploy
-        run: |
-          cd dist
-          [ -f 404.html ] || ln -s index.html 404.html
-          if [ "none" !=  "$cname" ]; then echo "$cname" > CNAME; fi
-          git config --global user.name "$user_name"
-          git config --global user.email "$user_email"
-          git init
-          git add -A
-          git commit -m "${{ github.event.head_commit.message }}"
-          git push -f https://_:"$token"@github.com/${{ github.event.repository.full_name }}.git master:gh-pages
-        shell: bash
-        env:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          user_name: GitHub Action
-          user_email: action@github.com
-          cname: none
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          # Upload dist repository
+          path: './dist'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
