@@ -1,3 +1,4 @@
+import 'vite-ssg';
 import { fileURLToPath, URL } from 'url';
 
 import { defineConfig } from 'vite';
@@ -12,4 +13,13 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
+  ssgOptions: {
+    formatting: 'minify',
+    dirStyle: 'nested',
+    script: 'async',
+  },
+  ssr: {
+    noExternal: ['vuetify'],
+  },
+  base: '/algorithm-visualizer/',
 });
