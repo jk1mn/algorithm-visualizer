@@ -13,19 +13,25 @@ onUpdated(() => {
 </script>
 
 <template>
-  <v-list ref="container" class="logs">
-    <v-list-item
-      v-for="(log, index) in logs"
-      :key="index"
-      :title="log"
-      class="logs__item"
-    />
-  </v-list>
+  <div class="logs-wrapper">
+    <v-list ref="container" class="logs">
+      <v-list-item
+        v-for="(log, index) in logs"
+        :key="index"
+        :title="log"
+        class="logs__item"
+      />
+    </v-list>
+  </div>
 </template>
 
 <style lang="scss" scoped>
-.logs {
+.logs-wrapper {
+  overflow: hidden;
   border-radius: 1rem;
+}
+
+.logs {
   height: 200px;
   padding: 1rem 0;
   margin: 0;
