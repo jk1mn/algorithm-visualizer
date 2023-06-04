@@ -18,7 +18,7 @@ onUpdated(() => {
       <v-list-item
         v-for="(log, index) in logs"
         :key="index"
-        :title="log"
+        v-html="log"
         class="logs__item"
       />
     </v-list>
@@ -39,12 +39,11 @@ onUpdated(() => {
 }
 
 .logs__item {
+  display: flex;
+  gap: 4px;
   padding: 0.5rem 1rem;
   border-bottom: 1px solid #424242;
-
-  :deep(.v-list-item-title) {
-    font-size: 0.94em;
-    line-height: 1rem;
-  }
+  font-size: 0.94em;
+  line-height: 1rem;
 }
 </style>

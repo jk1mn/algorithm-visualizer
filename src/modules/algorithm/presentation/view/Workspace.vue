@@ -5,6 +5,7 @@ import { getRandomList } from '@/modules/algorithm/utility/random';
 import { SortNumericArrayInput } from '@/modules/algorithm/domain/dto/input/sort-numeric-array-input';
 
 import Log from './Log.vue';
+import Script from './Script.vue';
 import ToolBar from './ToolBar.vue';
 import type { ViewModel } from '../view-model';
 import type { InputDataType } from '../../domain/types';
@@ -62,9 +63,10 @@ onBeforeMount(() => {
               :position="viewModel.position.value"
             />
           </v-sheet>
-          <v-sheet class="visualize-current-action">
-            {{ viewModel.solution.value?.steps[viewModel.position.value]?.log }}
-          </v-sheet>
+          <v-sheet
+            class="visualize-current-action"
+            v-html="viewModel.solution.value?.steps[viewModel.position.value]?.log"
+          />
           <ToolBar
             :playing="viewModel.playing.value"
             @back="back"
@@ -76,7 +78,7 @@ onBeforeMount(() => {
         </template>
       </v-col>
 
-      <v-col md="4" cols="12">
+      <v-col md="4" cols="12" class="flex-column">
         <v-sheet
           min-height="100"
           class="mx-auto form-container"
@@ -87,6 +89,11 @@ onBeforeMount(() => {
             @input-generated="generateSolution"
           />
         </v-sheet>
+        <Script
+          v-if="viewModel.solution.value"
+          :code="viewModel.solution.value.script"
+          :highlighted-lines="viewModel.solution.value?.steps[viewModel.position.value]?.payload?.highlightedCodeLines || []"
+        />
       </v-col>
     </v-row>
   </v-container>
