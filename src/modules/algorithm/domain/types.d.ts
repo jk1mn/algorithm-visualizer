@@ -17,3 +17,5 @@ type InputDataMap = {
 export type PayloadType<T extends AlgorithmType> = PayloadsMap[T];
 
 export type InputDataType<T extends AlgorithmType> = InputDataMap[T];
+
+export type LinesRange = Array<number|string>;

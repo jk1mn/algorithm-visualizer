@@ -3,11 +3,16 @@ import { addSuffix } from '@/utils/numericSuffix';
 import type { AlgorithmType } from '@/modules/algorithm/domain/constants';
 import { Step } from '@/modules/algorithm/domain/algorithms/solution/step';
 import { Algorithm } from '@/modules/algorithm/domain/algorithms/algoithm';
+import script from '@/modules/algorithm/domain/algorithms/scripts/binary-search';
 import type { Solution } from '@/modules/algorithm/domain/algorithms/solution/solution';
 import { SearchNumberPayload } from '@/modules/algorithm/domain/dto/step/search-number-payload';
 import type { SearchNumberInput } from '@/modules/algorithm/domain/dto/input/search-number-input';
 
 export class BinarySearch extends Algorithm<AlgorithmType.BinarySearch> {
+  constructor () {
+    super(script);
+  }
+
   solve(input: SearchNumberInput): Solution<AlgorithmType.BinarySearch> {
     let start = 0;
     let end = input.numbers.length - 1;
