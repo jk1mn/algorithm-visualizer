@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Panel from '@/components/ui/Panel.vue';
 import CodeBlock from '@/components/ui/CodeBlock.vue';
 
 withDefaults(defineProps<{
@@ -10,26 +11,13 @@ withDefaults(defineProps<{
 </script>
 
 <template>
-  <div class="alorithm-script">
-    <div class="alorithm-script__container">
-      <CodeBlock
-        :code="code"
-        :highlighted-lines="highlightedLines"
-      />
-    </div>
-  </div>
+  <Panel title="Implementation">
+    <CodeBlock
+      :code="code"
+      :highlighted-lines="highlightedLines"
+    />
+  </Panel>
 </template>
 
 <style lang="scss" scoped>
-.alorithm-script {
-  overflow: hidden;
-  border-radius: 1rem;
-
-  &__container {
-    // height: 200px;
-    // padding: 1rem 0;
-    margin: 0;
-    // overflow-y: auto;
-  }
-}
 </style>

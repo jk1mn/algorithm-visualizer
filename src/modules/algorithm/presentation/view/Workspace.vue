@@ -1,25 +1,33 @@
-<script setup lang="ts">
-import { type Component, onBeforeMount } from 'vue';
+<script setup lang="ts" generic="T extends AlgorithmType">
+import { onBeforeMount } from 'vue';
 
+import Grid from '@/components/ui/Grid.vue';
+import GridItem from '@/components/ui/GridItem.vue';
+import type { Widgets } from '@/modules/widget/types';
+import { WidgetType } from '@/modules/widget/constants';
 import { getRandomList } from '@/modules/algorithm/utility/random';
 import { SortNumericArrayInput } from '@/modules/algorithm/domain/dto/input/sort-numeric-array-input';
 
 import Log from './Log.vue';
 import Script from './Script.vue';
-import ToolBar from './ToolBar.vue';
 import type { ViewModel } from '../view-model';
-import type { InputDataType } from '../../domain/types';
+import VisualizationArea from './VisualizationArea.vue';
 import type { AlgorithmType } from '../../domain/constants';
+import DataGenerator from './DataGenerator.vue';
+import type { InputDataType, PreviewType, FormType } from '../../domain/types';
 
 const props = defineProps<{
   header: string;
-  algorithmType: AlgorithmType;
-  formComponent: Component | null;
-  previewComponent: Component | null;
-  viewModel: ViewModel<AlgorithmType>;
+  algorithmType: T;
+  formComponent: FormType<T> | null;
+  previewComponent: PreviewType<T> | null;
+  loadingPreview: boolean;
+  loadingForm: boolean;
+  viewModel: ViewModel<T>;
+  widgets: Widgets | null;
 }>();
 
-function generateSolution(input: InputDataType<AlgorithmType>) {
+function generateSolution(input: InputDataType<T>) {
   props.viewModel.generateSolution(props.algorithmType, input);
 }
 
@@ -46,82 +54,75 @@ onBeforeMount(() => {
 
 <template>
   <v-container>
-    <v-row>
-      <v-col>
-        <h2>{{ header }}</h2>
-      </v-col>
-    </v-row>
+    <Grid
+      v-if="widgets"
+      class="visualize-container"
+    >
+      <GridItem
+        :x-coordinate="widgets[WidgetType.VISUALIZATION].x"
+        :y-coordinate="widgets[WidgetType.VISUALIZATION].y"
+        :width="widgets[WidgetType.VISUALIZATION].width"
+        :height="widgets[WidgetType.VISUALIZATION].height"
+        :id="WidgetType.VISUALIZATION"
+        :loading="loadingPreview"
+      >
+        <VisualizationArea
+          :preview-component="previewComponent"
+          :playing="viewModel.playing.value"
+          :input-data="viewModel.input.value!"
+          :steps="viewModel.solution.value?.steps || []"
+          :position="viewModel.position.value"
+          :algorithm="header"
+          @back="back"
+          @forward="forward"
+          @play="play"
+          @pause="pause"
+        />
+      </GridItem>
 
-    <v-row class="visualize-container">
-      <v-col cols="12" md="7" class="flex-column">
-        <template v-if="previewComponent && viewModel.input.value">
-          <v-sheet height="220" class="visualize-area">
-            <component
-              :is="previewComponent"
-              :input="viewModel.input.value"
-              :steps="viewModel.solution.value?.steps"
-              :position="viewModel.position.value"
-            />
-          </v-sheet>
-          <v-sheet
-            class="visualize-current-action"
-            v-html="viewModel.solution.value?.steps[viewModel.position.value]?.log"
-          />
-          <ToolBar
-            :playing="viewModel.playing.value"
-            @back="back"
-            @forward="forward"
-            @play="play"
-            @pause="pause"
-          />
-          <Log :logs="viewModel.logs.value" />
-        </template>
-      </v-col>
+      <GridItem
+        :x-coordinate="widgets[WidgetType.LOG].x"
+        :y-coordinate="widgets[WidgetType.LOG].y"
+        :width="widgets[WidgetType.LOG].width"
+        :height="widgets[WidgetType.LOG].height"
+        :id="WidgetType.LOG"
+      >
+        <Log :logs="viewModel.logs.value" />
+      </GridItem>
 
-      <v-col md="4" cols="12" class="flex-column">
-        <v-sheet
-          min-height="100"
-          class="mx-auto form-container"
-        >
-          <component
-            v-if="formComponent"
-            :is="formComponent"
-            @input-generated="generateSolution"
-          />
-        </v-sheet>
+      <GridItem
+        :x-coordinate="widgets[WidgetType.FORM].x"
+        :y-coordinate="widgets[WidgetType.FORM].y"
+        :width="widgets[WidgetType.FORM].width"
+        :height="widgets[WidgetType.FORM].height"
+        :id="WidgetType.FORM"
+        :loading="loadingForm"
+      >
+        <DataGenerator
+          :form-component="formComponent"
+          @input-generated="generateSolution"
+        />
+      </GridItem>
+
+      <GridItem
+        :x-coordinate="widgets[WidgetType.SCRIPT].x"
+        :y-coordinate="widgets[WidgetType.SCRIPT].y"
+        :width="widgets[WidgetType.SCRIPT].width"
+        :height="widgets[WidgetType.SCRIPT].height"
+        :id="WidgetType.SCRIPT"
+      >
         <Script
           v-if="viewModel.solution.value"
           :code="viewModel.solution.value.script"
           :highlighted-lines="viewModel.solution.value?.steps[viewModel.position.value]?.payload?.highlightedCodeLines || []"
         />
-      </v-col>
-    </v-row>
+      </GridItem>
+    </Grid>
   </v-container>
 </template>
 
 <style lang="scss" scoped>
 .visualize-container {
   font-size: 14px;
-}
-
-.visualize-area {
-  display: flex;
-  align-items: end;
-  justify-content: center;
-  border-top-left-radius: 1rem;
-  border-top-right-radius: 1rem;
-  overflow-x: auto;
-}
-
-.visualize-current-action {
-  height: 36px;
-  padding: 0.5rem;
-  text-align: center;
-}
-
-.form-container {
-  display: flex;
-  align-items: center;
-  border-radius: 1rem;
 }
 </style>

@@ -45,10 +45,6 @@ defineProps<{
 
 <style scoped lang="scss">
 .visualizer-toolbar {
-  border-bottom-left-radius: 1rem;
-  border-bottom-right-radius: 1rem;
-  margin-bottom: 1.5rem;
-
   :deep(.v-toolbar__content) {
     justify-content: center;
   }

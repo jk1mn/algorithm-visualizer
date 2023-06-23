@@ -1,19 +1,22 @@
-<script setup lang="ts">
-import type { Component } from 'vue';
-
+<script setup lang="ts" generic="T extends AlgorithmType">
 import Workspace from './Workspace.vue';
 import { ViewModel } from '../view-model';
 import { Facade } from '../../domain/facade';
 import type { AlgorithmType } from '../../domain/constants';
+import type { PreviewType, FormType } from '../../domain/types';
+import type { Widgets } from '@/modules/widget/types';
 
 defineProps<{
   header: string;
-  algorithmType: AlgorithmType;
-  formComponent: Component | null;
-  previewComponent: Component | null;
+  algorithmType: T;
+  formComponent: FormType<T> | null;
+  previewComponent: PreviewType<T> | null;
+  loadingPreview: boolean;
+  loadingForm: boolean;
+  widgets: Widgets | null;
 }>();
 
-const viewModel = new ViewModel<AlgorithmType>(new Facade());
+const viewModel = new ViewModel<T>(new Facade());
 </script>
 
 <template>
@@ -23,5 +26,8 @@ const viewModel = new ViewModel<AlgorithmType>(new Facade());
     :form-component="formComponent"
     :preview-component="previewComponent"
     :view-model="viewModel"
+    :loading-preview="loadingPreview"
+    :loading-form="loadingForm"
+    :widgets="widgets"
   />
 </template>
