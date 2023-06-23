@@ -26,6 +26,9 @@ function inputGenerated() {
 <style lang="scss" scoped>
 .alg-form {
   width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
   padding: 1rem;
 }
 </style>

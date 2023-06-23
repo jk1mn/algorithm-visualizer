@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { onUpdated, ref, type ComponentPublicInstance } from 'vue';
 
+import Panel from '@/components/ui/Panel.vue';
+
 defineProps<{
   logs: string[];
 }>();
@@ -13,7 +15,7 @@ onUpdated(() => {
 </script>
 
 <template>
-  <div class="logs-wrapper">
+  <Panel title="Logs">
     <v-list ref="container" class="logs">
       <v-list-item
         v-for="(log, index) in logs"
@@ -22,20 +24,14 @@ onUpdated(() => {
         class="logs__item"
       />
     </v-list>
-  </div>
+  </Panel>
 </template>
 
 <style lang="scss" scoped>
-.logs-wrapper {
-  overflow: hidden;
-  border-radius: 1rem;
-}
-
 .logs {
-  height: 200px;
-  padding: 1rem 0;
+  height: 100%;
+  padding: 0;
   margin: 0;
-  overflow-y: auto;
 }
 
 .logs__item {

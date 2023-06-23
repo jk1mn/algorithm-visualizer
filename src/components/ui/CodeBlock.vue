@@ -45,6 +45,8 @@ watch(() => props.highlightedLines, (current: LinesRange, previous: LinesRange) 
 
 <style lang="scss">
 pre[data-line] {
-  padding-left: 1rem;
+  height: 100%;
+  margin: 0;
+  padding: 0 1rem;
 }
 </style>
