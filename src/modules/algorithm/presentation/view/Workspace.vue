@@ -1,11 +1,12 @@
 <script setup lang="ts" generic="T extends AlgorithmType">
-import { onBeforeMount } from 'vue';
+import { onBeforeMount, computed } from 'vue';
 
-import Grid from '@/components/ui/Grid.vue';
+import Grid from '@/components/ui/grid/Grid.vue';
 import GridItem from '@/components/ui/GridItem.vue';
 import type { Widgets } from '@/modules/widget/types';
 import { WidgetType } from '@/modules/widget/constants';
 import { getRandomList } from '@/modules/algorithm/utility/random';
+import type { GridEventBus } from '@/components/ui/grid/event-bus';
 import { SortNumericArrayInput } from '@/modules/algorithm/domain/dto/input/sort-numeric-array-input';
 
 import Log from './Log.vue';
@@ -25,7 +26,11 @@ const props = defineProps<{
   loadingForm: boolean;
   viewModel: ViewModel<T>;
   widgets: Widgets | null;
+  isEditingGrid: boolean;
+  gridEventBus: GridEventBus;
 }>();
+
+const widgetItems = computed(() => props.widgets ? Object.values(props.widgets) : []);
 
 function generateSolution(input: InputDataType<T>) {
   props.viewModel.generateSolution(props.algorithmType, input);
@@ -57,12 +62,15 @@ onBeforeMount(() => {
     <Grid
       v-if="widgets"
       class="visualize-container"
+      :layout="widgetItems"
+      :editing="isEditingGrid"
+      :event-bus="gridEventBus"
     >
       <GridItem
         :x-coordinate="widgets[WidgetType.VISUALIZATION].x"
         :y-coordinate="widgets[WidgetType.VISUALIZATION].y"
-        :width="widgets[WidgetType.VISUALIZATION].width"
-        :height="widgets[WidgetType.VISUALIZATION].height"
+        :width="widgets[WidgetType.VISUALIZATION].w"
+        :height="widgets[WidgetType.VISUALIZATION].h"
         :id="WidgetType.VISUALIZATION"
         :loading="loadingPreview"
       >
@@ -83,8 +91,8 @@ onBeforeMount(() => {
       <GridItem
         :x-coordinate="widgets[WidgetType.LOG].x"
         :y-coordinate="widgets[WidgetType.LOG].y"
-        :width="widgets[WidgetType.LOG].width"
-        :height="widgets[WidgetType.LOG].height"
+        :width="widgets[WidgetType.LOG].w"
+        :height="widgets[WidgetType.LOG].h"
         :id="WidgetType.LOG"
       >
         <Log :logs="viewModel.logs.value" />
@@ -93,8 +101,8 @@ onBeforeMount(() => {
       <GridItem
         :x-coordinate="widgets[WidgetType.FORM].x"
         :y-coordinate="widgets[WidgetType.FORM].y"
-        :width="widgets[WidgetType.FORM].width"
-        :height="widgets[WidgetType.FORM].height"
+        :width="widgets[WidgetType.FORM].w"
+        :height="widgets[WidgetType.FORM].h"
         :id="WidgetType.FORM"
         :loading="loadingForm"
       >
@@ -107,8 +115,8 @@ onBeforeMount(() => {
       <GridItem
         :x-coordinate="widgets[WidgetType.SCRIPT].x"
         :y-coordinate="widgets[WidgetType.SCRIPT].y"
-        :width="widgets[WidgetType.SCRIPT].width"
-        :height="widgets[WidgetType.SCRIPT].height"
+        :width="widgets[WidgetType.SCRIPT].w"
+        :height="widgets[WidgetType.SCRIPT].h"
         :id="WidgetType.SCRIPT"
       >
         <Script

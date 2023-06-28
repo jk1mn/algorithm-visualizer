@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Button from '@/components/ui/Button.vue';
 import { getRandomList } from '@/modules/algorithm/utility/random';
 import { SortNumericArrayInput } from '@/modules/algorithm/domain/dto/input/sort-numeric-array-input';
 
@@ -13,13 +14,12 @@ function inputGenerated() {
 
 <template>
   <v-form class="alg-form" @submit.prevent="inputGenerated">
-    <v-btn
+    <Button
       type="submit"
       block
-      elevation="24"
     >
       Random
-    </v-btn>
+    </Button>
   </v-form>
 </template>
 

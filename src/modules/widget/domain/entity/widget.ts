@@ -1,23 +1,27 @@
 import { Entity } from '../../../../shared/entity';
-import { objectSchema, intInRangeSchema } from '../../../../shared/validation-rules';
+import { objectSchema, intInRangeSchema, enumSchema } from '../../../../shared/validation-rules';
+import { WidgetType } from '../../constants';
 
 export class Widget extends Entity {
   x: number;
   y: number;
-  width: number;
-  height: number;
+  w: number;
+  h: number;
+  id: WidgetType;
 
   constructor (data: {
     x: number;
     y: number;
-    width: number;
-    height: number;
+    w: number;
+    h: number;
+    id: WidgetType;
   }) {
     super();
     this.x = data.x;
     this.y = data.y;
-    this.width = data.width;
-    this.height = data.height;
+    this.w = data.w;
+    this.h = data.h;
+    this.id = data.id;
     this.validate();
   }
 
@@ -25,8 +29,9 @@ export class Widget extends Entity {
     return objectSchema({
       x: intInRangeSchema(0, 12),
       y: intInRangeSchema(0, 12),
-      width: intInRangeSchema(1, 12),
-      height: intInRangeSchema(1, 12),
+      w: intInRangeSchema(1, 12),
+      h: intInRangeSchema(1, 12),
+      id: enumSchema(WidgetType),
     });
   }
 }

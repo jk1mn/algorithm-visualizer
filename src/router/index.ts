@@ -11,6 +11,7 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/algorithms/:name',
+    name: 'algorithm',
     component: () => import('@/views/Algorithm.vue'),
     beforeEnter: (
       to: RouteLocationNormalized,
