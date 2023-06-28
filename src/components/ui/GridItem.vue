@@ -24,7 +24,7 @@ withDefaults(defineProps<{
     :gs-y="yCoordinate"
     :gs-w="width"
     :gs-h="height"
-    :gs-id="'grid-item-' + id"
+    :gs-id="id"
   >
     <Skeleton v-if="loading" />
     <template v-else>

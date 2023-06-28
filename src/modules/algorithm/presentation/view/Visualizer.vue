@@ -5,6 +5,7 @@ import { Facade } from '../../domain/facade';
 import type { AlgorithmType } from '../../domain/constants';
 import type { PreviewType, FormType } from '../../domain/types';
 import type { Widgets } from '@/modules/widget/types';
+import type { GridEventBus } from '@/components/ui/grid/event-bus';
 
 defineProps<{
   header: string;
@@ -14,6 +15,8 @@ defineProps<{
   loadingPreview: boolean;
   loadingForm: boolean;
   widgets: Widgets | null;
+  isEditingGrid: boolean;
+  gridEventBus: GridEventBus;
 }>();
 
 const viewModel = new ViewModel<T>(new Facade());
@@ -29,5 +32,7 @@ const viewModel = new ViewModel<T>(new Facade());
     :loading-preview="loadingPreview"
     :loading-form="loadingForm"
     :widgets="widgets"
+    :is-editing-grid="isEditingGrid"
+    :grid-event-bus="gridEventBus"
   />
 </template>

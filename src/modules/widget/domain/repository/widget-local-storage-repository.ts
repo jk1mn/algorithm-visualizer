@@ -23,4 +23,8 @@ export class WidgetLocalStorageRepository implements IWidgetRepository {
   setWidgets(widgets: Widgets): void {
     LocalStorage.set(LocalStorageKey.WIDGET, widgets);
   }
+
+  clearWidgets(): void {
+    LocalStorage.remove(LocalStorageKey.WIDGET);
+  }
 }

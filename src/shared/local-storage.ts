@@ -9,4 +9,8 @@ export class LocalStorage {
   static set(key: LocalStorageKey, data: unknown) {
     localStorage.setItem(key, JSON.stringify(data));
   }
+
+  static remove(key: LocalStorageKey) {
+    localStorage.removeItem(key);
+  }
 }

@@ -1,9 +1,17 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
+import { useRoute } from 'vue-router';
 
+import Button from '../ui/Button.vue';
 import AppLink from '../ui/AppLink.vue';
 
 import algorithmRoutes from '@/router/algorithm-routes';
+import { useWidgetStore } from '@/modules/widget/store';
+
+const route = useRoute();
+const store = useWidgetStore();
+
+const isAlgPage = computed(() => route.name === 'algorithm');
 
 const showDrawer = ref<boolean>(false);
 </script>
@@ -24,6 +32,17 @@ const showDrawer = ref<boolean>(false);
         Algorithm Visualizer
       </AppLink>
     </v-app-bar-title>
+
+    <v-spacer />
+
+    <Button
+      v-if="isAlgPage"
+      variant="outlined"
+      color="white"
+      @click="store.setIsEditing(true)"
+    >
+      Edit Grid
+    </Button>
   </v-app-bar>
 
   <v-navigation-drawer

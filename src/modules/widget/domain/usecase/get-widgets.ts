@@ -23,26 +23,30 @@ export class GetWidgetsCase {
       [WidgetType.VISUALIZATION]: new Widget({
         x: 0,
         y: 0,
-        width: 8,
-        height: 3,
+        w: 8,
+        h: 3,
+        id: WidgetType.VISUALIZATION,
       }),
       [WidgetType.LOG]: new Widget({
         x: 0,
         y: 3,
-        width: 5,
-        height: 2,
+        w: 5,
+        h: 2,
+        id: WidgetType.LOG,
       }),
       [WidgetType.FORM]: new Widget({
         x: 5,
         y: 3,
-        width: 3,
-        height: 2,
+        w: 3,
+        h: 2,
+        id: WidgetType.FORM,
       }),
       [WidgetType.SCRIPT]: new Widget({
         x: 8,
         y: 0,
-        width: 4,
-        height: 5,
+        w: 4,
+        h: 5,
+        id: WidgetType.SCRIPT,
       }),
     };
   }

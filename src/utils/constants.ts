@@ -1,3 +1,3 @@
 export enum LocalStorageKey {
-  WIDGET = 'widget',
+  WIDGET = 'alg-vis__widget',
 }

@@ -1,12 +1,18 @@
 <script setup lang="ts">
+import { storeToRefs } from 'pinia';
 import { useRoute } from 'vue-router';
 import { computed, ref, watchEffect, markRaw, onBeforeMount } from 'vue';
 
+import { useWidgetStore } from '@/modules/widget/store';
 import { AlgorithmRoute } from '@/router/algorithm-routes';
+import { GridEvent } from '@/components/ui/grid/event-bus';
+import gridEventBus from '@/components/edit-grid/event-bus';
+import EditGridPanel from '@/components/edit-grid/Panel.vue';
 import Visualizer from '@/modules/algorithm/presentation/view/Visualizer.vue';
-import { GetWidgetsCase } from '@/modules/widget/domain/usecase/get-widgets';
-import { WidgetLocalStorageRepository } from '@/modules/widget/domain/repository/widget-local-storage-repository';
-import type { Widgets } from '@/modules/widget/types';
+
+const store = useWidgetStore();
+
+const { isEditing, widgets } = storeToRefs(store);
 
 const route = useRoute();
 const algRoute = computed(() =>
@@ -36,13 +42,21 @@ watchEffect(() => {
   });
 });
 
-const getWidgetsCase = new GetWidgetsCase(new WidgetLocalStorageRepository());
-
-const widgets = ref<Widgets | null>(null);
-
 onBeforeMount(() => {
-  widgets.value = getWidgetsCase.execute();
+  store.initializeWidgets();
 });
+
+function saveGrid () {
+  gridEventBus.emit(GridEvent.SAVE_CLICK);
+}
+
+function cancelEditingGrid () {
+  gridEventBus.emit(GridEvent.CANCEL_CLICK);
+}
+
+function useDefaultWidgets () {
+  gridEventBus.emit(GridEvent.DEFAULT_CLICK);
+}
 </script>
 
 <template>
@@ -54,5 +68,13 @@ onBeforeMount(() => {
     :loading-form="loadingForm"
     :loading-preview="loadingPreview"
     :widgets="widgets"
+    :is-editing-grid="isEditing"
+    :grid-event-bus="gridEventBus"
+  />
+  <EditGridPanel
+    :visible="isEditing"
+    @submit="saveGrid"
+    @cancel="cancelEditingGrid"
+    @use-default="useDefaultWidgets"
   />
 </template>

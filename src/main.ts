@@ -1,5 +1,6 @@
 import { ViteSSG } from 'vite-ssg';
 import 'vuetify/styles';
+import { createPinia } from 'pinia'
 import { createVuetify } from 'vuetify';
 import '@mdi/font/css/materialdesignicons.css';
 
@@ -18,6 +19,10 @@ export const createApp = ViteSSG(
       },
     });
 
-    app.use(vuetify);
+    const pinia = createPinia()
+
+    app
+      .use(vuetify)
+      .use(pinia);
   },
 );

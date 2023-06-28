@@ -13,7 +13,8 @@
   "dependencies": {
     "@jamescoyle/vue-icon": "0.1.2",
     "@mdi/js": "7.2.96",
-    "gridstack": "^8.3.0",
+    "@vueuse/core": "10.2.0",
+    "gridstack": "8.3.0",
     "pinia": "2.0.13",
     "prismjs": "1.29.0",
     "sass": "1.51.0",
@@ -21,7 +22,7 @@
     "vue": "3.3.4",
     "vue-router": "4.1.6",
     "vuetify": "3.2.1",
-    "zod": "^3.21.4"
+    "zod": "3.21.4"
   },
   "devDependencies": {
     "@mdi/font": "7.2.96",
