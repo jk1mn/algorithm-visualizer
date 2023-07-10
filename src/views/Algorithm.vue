@@ -34,7 +34,6 @@ watchEffect(() => {
     algRoute.value?.getInfo(),
   ])
     .then(components => {
-      console.log(components)
       preview.value = markRaw(components[0].default);
       form.value = markRaw(components[1].default);
       info.value = markRaw(components[2].default);
