@@ -43,10 +43,17 @@ export class GetWidgetsCase {
       }),
       [WidgetType.SCRIPT]: new Widget({
         x: 8,
+        y: 3,
+        w: 4,
+        h: 3,
+        id: WidgetType.SCRIPT,
+      }),
+      [WidgetType.INFO]: new Widget({
+        x: 8,
         y: 0,
         w: 4,
-        h: 5,
-        id: WidgetType.SCRIPT,
+        h: 2,
+        id: WidgetType.INFO,
       }),
     };
   }

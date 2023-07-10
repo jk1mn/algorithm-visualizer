@@ -10,3 +10,5 @@ export class SchemaValidationException extends Error {
     this.issues = issues;
   }
 }
+
+export class FailedImportException extends AppException {}
