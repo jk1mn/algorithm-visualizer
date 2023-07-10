@@ -9,6 +9,7 @@ import { GridEvent } from '@/components/ui/grid/event-bus';
 import gridEventBus from '@/components/edit-grid/event-bus';
 import EditGridPanel from '@/components/edit-grid/Panel.vue';
 import Visualizer from '@/modules/algorithm/presentation/view/Visualizer.vue';
+import { FailedImportException } from '@/shared/exceptions';
 
 const store = useWidgetStore();
 
@@ -20,26 +21,30 @@ const algRoute = computed(() =>
 );
 
 const preview = ref(null);
-const loadingPreview = ref(false);
-
 const form = ref(null);
-const loadingForm = ref(false);
+const info = ref(null);
+const loading = ref(false);
 
 watchEffect(() => {
-  loadingForm.value = true;
-  loadingPreview.value = true;
+  loading.value = true;
 
-  algRoute.value?.getPreview().then((component) => {
-    preview.value = markRaw(component.default);
-  }).finally(() => {
-    loadingPreview.value = false;
-  });
-
-  algRoute.value?.getForm().then((component) => {
-    form.value = markRaw(component.default);
-  }).finally(() => {
-    loadingForm.value = false;
-  });
+  Promise.all([
+    algRoute.value?.getPreview(),
+    algRoute.value?.getForm(),
+    algRoute.value?.getInfo(),
+  ])
+    .then(components => {
+      console.log(components)
+      preview.value = markRaw(components[0].default);
+      form.value = markRaw(components[1].default);
+      info.value = markRaw(components[2].default);
+    })
+    .catch((e) => {
+      throw new FailedImportException(e?.message, { cause: e });
+    })
+    .finally(() => {
+      loading.value = false;
+    });
 });
 
 onBeforeMount(() => {
@@ -65,8 +70,8 @@ function useDefaultWidgets () {
     :algorithm-type="algRoute.type"
     :form-component="form"
     :preview-component="preview"
-    :loading-form="loadingForm"
-    :loading-preview="loadingPreview"
+    :info-component="info"
+    :loading="loading"
     :widgets="widgets"
     :is-editing-grid="isEditing"
     :grid-event-bus="gridEventBus"

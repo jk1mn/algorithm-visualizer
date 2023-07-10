@@ -3,7 +3,7 @@ import Workspace from './Workspace.vue';
 import { ViewModel } from '../view-model';
 import { Facade } from '../../domain/facade';
 import type { AlgorithmType } from '../../domain/constants';
-import type { PreviewType, FormType } from '../../domain/types';
+import type { PreviewType, FormType, InfoComponent } from '../../domain/types';
 import type { Widgets } from '@/modules/widget/types';
 import type { GridEventBus } from '@/components/ui/grid/event-bus';
 
@@ -12,8 +12,8 @@ defineProps<{
   algorithmType: T;
   formComponent: FormType<T> | null;
   previewComponent: PreviewType<T> | null;
-  loadingPreview: boolean;
-  loadingForm: boolean;
+  infoComponent: InfoComponent<T> | null;
+  loading: boolean;
   widgets: Widgets | null;
   isEditingGrid: boolean;
   gridEventBus: GridEventBus;
@@ -28,9 +28,9 @@ const viewModel = new ViewModel<T>(new Facade());
     :algorithm-type="algorithmType"
     :form-component="formComponent"
     :preview-component="previewComponent"
+    :info-component="infoComponent"
     :view-model="viewModel"
-    :loading-preview="loadingPreview"
-    :loading-form="loadingForm"
+    :loading="loading"
     :widgets="widgets"
     :is-editing-grid="isEditingGrid"
     :grid-event-bus="gridEventBus"

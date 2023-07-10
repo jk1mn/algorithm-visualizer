@@ -10,20 +10,21 @@ import type { GridEventBus } from '@/components/ui/grid/event-bus';
 import { SortNumericArrayInput } from '@/modules/algorithm/domain/dto/input/sort-numeric-array-input';
 
 import Log from './Log.vue';
+import InfoPanel from './InfoPanel.vue';
 import Script from './Script.vue';
 import type { ViewModel } from '../view-model';
 import VisualizationArea from './VisualizationArea.vue';
 import type { AlgorithmType } from '../../domain/constants';
 import DataGenerator from './DataGenerator.vue';
-import type { InputDataType, PreviewType, FormType } from '../../domain/types';
+import type { InputDataType, PreviewType, FormType, InfoComponent } from '../../domain/types';
 
 const props = defineProps<{
   header: string;
   algorithmType: T;
   formComponent: FormType<T> | null;
   previewComponent: PreviewType<T> | null;
-  loadingPreview: boolean;
-  loadingForm: boolean;
+  infoComponent: InfoComponent<T> | null;
+  loading: boolean;
   viewModel: ViewModel<T>;
   widgets: Widgets | null;
   isEditingGrid: boolean;
@@ -72,7 +73,7 @@ onBeforeMount(() => {
         :width="widgets[WidgetType.VISUALIZATION].w"
         :height="widgets[WidgetType.VISUALIZATION].h"
         :id="WidgetType.VISUALIZATION"
-        :loading="loadingPreview"
+        :loading="loading"
       >
         <VisualizationArea
           :preview-component="previewComponent"
@@ -104,7 +105,7 @@ onBeforeMount(() => {
         :width="widgets[WidgetType.FORM].w"
         :height="widgets[WidgetType.FORM].h"
         :id="WidgetType.FORM"
-        :loading="loadingForm"
+        :loading="loading"
       >
         <DataGenerator
           :form-component="formComponent"
@@ -124,6 +125,16 @@ onBeforeMount(() => {
           :code="viewModel.solution.value.script"
           :highlighted-lines="viewModel.solution.value?.steps[viewModel.position.value]?.payload?.highlightedCodeLines || []"
         />
+      </GridItem>
+
+      <GridItem
+        :x-coordinate="widgets[WidgetType.INFO].x"
+        :y-coordinate="widgets[WidgetType.INFO].y"
+        :width="widgets[WidgetType.INFO].w"
+        :height="widgets[WidgetType.INFO].h"
+        :id="WidgetType.INFO"
+      >
+        <InfoPanel :component="infoComponent" />
       </GridItem>
     </Grid>
   </v-container>

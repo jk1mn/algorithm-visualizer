@@ -31,6 +31,10 @@ export class AlgorithmRoute {
   async getForm() {
     return import(`@/components/algorithms/form/${this.component}.vue`);
   }
+
+  async getInfo() {
+    return import(`@/modules/algorithm/presentation/view/info/${this.component}.vue`);
+  }
 }
 
 const routes = [
