@@ -3,6 +3,7 @@ import type BubbleSortForm from '@/components/algorithms/preview/BubbleSort.vue'
 import type BinarySearchForm from '@/components/algorithms/form/BinarySearch.vue';
 import type BinarySearchPreview from '@/components/algorithms/preview/BinarySearch.vue';
 import type BubbleSortInfo from '@/modules/algorithm/presentation/view/info/BubbleSort.vue';
+import type BinarySearchInfo from '@/modules/algorithm/presentation/view/info/BinarySearch.vue';
 
 import { AlgorithmType } from './constants';
 import type { SearchNumberInput } from './dto/input/search-number-input';
@@ -19,7 +20,7 @@ type Algorithm<Input, Payload, Preview, Form, Info> = {
 };
 
 type AlgorithmMap = {
-  [AlgorithmType.BinarySearch]: Algorithm<SearchNumberInput, SearchNumberPayload, BinarySearchPreview, BinarySearchForm, BubbleSortInfo>;
+  [AlgorithmType.BinarySearch]: Algorithm<SearchNumberInput, SearchNumberPayload, BinarySearchPreview, BinarySearchForm, BinarySearchInfo>;
   [AlgorithmType.BubbleSort]: Algorithm<SortNumericArrayInput, SortNumericArrayPayload, BubbleSortPreview, BubbleSortForm, BubbleSortInfo>;
 };
 

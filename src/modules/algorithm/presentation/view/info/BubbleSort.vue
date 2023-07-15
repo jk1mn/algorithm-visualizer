@@ -6,5 +6,3 @@
     Bubble sort has a worst-case and average complexity of <i>O(n<sup><small>2</small></sup>)</i>.
   </p>
 </template>
-
-<script setup lang="ts"></script>

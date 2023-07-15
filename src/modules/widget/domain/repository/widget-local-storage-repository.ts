@@ -17,6 +17,7 @@ export class WidgetLocalStorageRepository implements IWidgetRepository {
       [WidgetType.FORM]: new Widget(data[WidgetType.FORM]),
       [WidgetType.SCRIPT]: new Widget(data[WidgetType.SCRIPT]),
       [WidgetType.VISUALIZATION]: new Widget(data[WidgetType.VISUALIZATION]),
+      [WidgetType.INFO]: new Widget(data[WidgetType.INFO]),
     };
   }
 

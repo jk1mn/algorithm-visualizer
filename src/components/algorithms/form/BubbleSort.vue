@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { onMounted } from 'vue';
+
 import Button from '@/components/ui/Button.vue';
 import { getRandomList } from '@/modules/algorithm/utility/random';
 import { SortNumericArrayInput } from '@/modules/algorithm/domain/dto/input/sort-numeric-array-input';
@@ -6,6 +8,8 @@ import { SortNumericArrayInput } from '@/modules/algorithm/domain/dto/input/sort
 const emit = defineEmits<{
   (e: 'input-generated', input: SortNumericArrayInput): void;
 }>();
+
+onMounted(inputGenerated);
 
 function inputGenerated() {
   emit('input-generated', new SortNumericArrayInput(getRandomList()));

@@ -1,13 +1,11 @@
 <script setup lang="ts" generic="T extends AlgorithmType">
-import { onBeforeMount, computed } from 'vue';
+import { computed } from 'vue';
 
 import Grid from '@/components/ui/grid/Grid.vue';
 import GridItem from '@/components/ui/GridItem.vue';
 import type { Widgets } from '@/modules/widget/types';
 import { WidgetType } from '@/modules/widget/constants';
-import { getRandomList } from '@/modules/algorithm/utility/random';
 import type { GridEventBus } from '@/components/ui/grid/event-bus';
-import { SortNumericArrayInput } from '@/modules/algorithm/domain/dto/input/sort-numeric-array-input';
 
 import Log from './Log.vue';
 import InfoPanel from './InfoPanel.vue';
@@ -52,10 +50,6 @@ function back() {
 function forward() {
   props.viewModel.toNextStep();
 }
-
-onBeforeMount(() => {
-  generateSolution(new SortNumericArrayInput(getRandomList()));
-});
 </script>
 
 <template>
@@ -76,9 +70,10 @@ onBeforeMount(() => {
         :loading="loading"
       >
         <VisualizationArea
+          v-if="viewModel.input.value"
           :preview-component="previewComponent"
           :playing="viewModel.playing.value"
-          :input-data="viewModel.input.value!"
+          :input-data="viewModel.input.value"
           :steps="viewModel.solution.value?.steps || []"
           :position="viewModel.position.value"
           :algorithm="header"
