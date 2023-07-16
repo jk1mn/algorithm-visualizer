@@ -9,7 +9,7 @@ import type { Step } from '../../domain/algorithms/solution/step';
 import { menuOptions } from '../constants';
 import type { MenuOption } from '../constants';
 
-const emit = defineEmits<{
+defineEmits<{
   (e: 'back'): void;
   (e: 'forward'): void;
   (e: 'play'): void;
@@ -17,7 +17,7 @@ const emit = defineEmits<{
   (e: 'menu-item-clicked', value: MenuOption): void;
 }>();
 
-const props = defineProps<{
+defineProps<{
   previewComponent: PreviewType<T>;
   playing: boolean;
   inputData: InputDataType<T>;
