@@ -1,10 +1,11 @@
 import { swap } from '@/utils/arrays';
+import { getRandomList } from '@/modules/algorithm/utility/random';
 import type { AlgorithmType } from '@/modules/algorithm/domain/constants';
 import { Algorithm } from '@/modules/algorithm/domain/algorithms/algoithm';
 import { Step } from '@/modules/algorithm/domain/algorithms/solution/step';
 import type { Solution } from '@/modules/algorithm/domain/algorithms/solution/solution';
 import { SortNumericArrayPayload } from '@/modules/algorithm/domain/dto/step/sort-numeric-array-payload';
-import type { SortNumericArrayInput } from '@/modules/algorithm/domain/dto/input/sort-numeric-array-input';
+import { SortNumericArrayInput } from '@/modules/algorithm/domain/dto/input/sort-numeric-array-input';
 import script from '@/modules/algorithm/domain/algorithms/scripts/bubble-sort';
 
 export class BubbleSort extends Algorithm<AlgorithmType.BubbleSort> {
@@ -87,5 +88,9 @@ export class BubbleSort extends Algorithm<AlgorithmType.BubbleSort> {
     this.solution.addStep(new Step('The array is sorted', new SortNumericArrayPayload({ lastUnsortedIndex: -1 })));
 
     return this.solution;
+  }
+
+  getRandomInput() {
+    return new SortNumericArrayInput(getRandomList());
   }
 }

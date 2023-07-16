@@ -4,4 +4,5 @@ import type { Solution } from '@/modules/algorithm/domain/algorithms/solution/so
 
 export interface IAlgorithm<T extends AlgorithmType> {
   solve(input: InputDataType<T>): Solution<T>;
+  getRandomInput(): InputDataType<T>;
 }

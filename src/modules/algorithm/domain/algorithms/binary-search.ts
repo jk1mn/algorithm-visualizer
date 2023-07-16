@@ -6,7 +6,8 @@ import { Algorithm } from '@/modules/algorithm/domain/algorithms/algoithm';
 import script from '@/modules/algorithm/domain/algorithms/scripts/binary-search';
 import type { Solution } from '@/modules/algorithm/domain/algorithms/solution/solution';
 import { SearchNumberPayload } from '@/modules/algorithm/domain/dto/step/search-number-payload';
-import type { SearchNumberInput } from '@/modules/algorithm/domain/dto/input/search-number-input';
+import { SearchNumberInput } from '@/modules/algorithm/domain/dto/input/search-number-input';
+import { getRandomTargetForSortedList, getRandomSortedList } from '@/modules/algorithm/utility/random';
 
 export class BinarySearch extends Algorithm<AlgorithmType.BinarySearch> {
   constructor () {
@@ -84,5 +85,12 @@ export class BinarySearch extends Algorithm<AlgorithmType.BinarySearch> {
     );
 
     return this.solution;
+  }
+
+  getRandomInput() {
+    const array = getRandomSortedList();
+    const target = getRandomTargetForSortedList(array);
+  
+    return new SearchNumberInput(array, target);
   }
 }
