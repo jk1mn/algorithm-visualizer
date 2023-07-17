@@ -36,6 +36,11 @@ export class ViewModel<T extends AlgorithmType> {
     });
   }
 
+  generateRandomInput(type: T) {
+    const input = this.algorithm.getRandomInput<T>(type);
+    this.generateSolution(type, input);
+  }
+
   generateSolution(type: T, input: InputDataType<T>) {
     this.pause();
     this.toStep(0);

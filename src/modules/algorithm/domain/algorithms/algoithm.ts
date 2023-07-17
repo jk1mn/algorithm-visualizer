@@ -12,4 +12,6 @@ export abstract class Algorithm<T extends AlgorithmType> implements IAlgorithm<T
   }
 
   abstract solve(input: InputDataType<T>): Solution<T>;
+
+  abstract getRandomInput(): InputDataType<T>;
 }

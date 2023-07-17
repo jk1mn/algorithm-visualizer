@@ -3,15 +3,18 @@ import Panel from '@/components/ui/Panel.vue';
 
 import ToolBar from './ToolBar.vue';
 import type { PreviewType } from '../../domain/types';
-import type { InputDataType } from '../../domain/types';
+import type { InputDataType, FormType } from '../../domain/types';
 import type { AlgorithmType } from '../../domain/constants';
 import type { Step } from '../../domain/algorithms/solution/step';
+import { menuOptions } from '../constants';
+import type { MenuOption } from '../constants';
 
 defineEmits<{
   (e: 'back'): void;
   (e: 'forward'): void;
   (e: 'play'): void;
   (e: 'pause'): void;
+  (e: 'menu-item-clicked', value: MenuOption): void;
 }>();
 
 defineProps<{
@@ -25,7 +28,11 @@ defineProps<{
 </script>
 
 <template>
-  <Panel :title="algorithm">
+  <Panel
+    :title="algorithm"
+    :menu-options="menuOptions"
+    @menu-item-clicked="$emit('menu-item-clicked', $event)"
+  >
     <v-sheet class="visualize-area">
       <component
         :is="previewComponent"

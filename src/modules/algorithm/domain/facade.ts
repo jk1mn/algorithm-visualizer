@@ -12,4 +12,10 @@ export class Facade {
 
     return algorithm.solve(input);
   }
+
+  getRandomInput<T extends AlgorithmType>(type: T): InputDataType<T> {
+    const algorithm = Factory.getAlgorithm<T>(type);
+
+    return algorithm.getRandomInput();
+  }
 }

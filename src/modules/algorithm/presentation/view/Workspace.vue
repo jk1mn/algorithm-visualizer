@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="T extends AlgorithmType">
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 
 import Grid from '@/components/ui/grid/Grid.vue';
 import GridItem from '@/components/ui/GridItem.vue';
@@ -8,12 +8,12 @@ import { WidgetType } from '@/modules/widget/constants';
 import type { GridEventBus } from '@/components/ui/grid/event-bus';
 
 import Log from './Log.vue';
-import InfoPanel from './InfoPanel.vue';
 import Script from './Script.vue';
+import InfoPanel from './InfoPanel.vue';
+import { MenuOption } from '../constants';
 import type { ViewModel } from '../view-model';
-import VisualizationArea from './VisualizationArea.vue';
+import VisualizationPanel from './VisualizationPanel.vue';
 import type { AlgorithmType } from '../../domain/constants';
-import DataGenerator from './DataGenerator.vue';
 import type { InputDataType, PreviewType, FormType, InfoComponent } from '../../domain/types';
 
 const props = defineProps<{
@@ -50,6 +50,17 @@ function back() {
 function forward() {
   props.viewModel.toNextStep();
 }
+
+function handleVisualizePanelMenuClick (event: MenuOption) {
+  switch (event) {
+    case MenuOption.RANDOMIZE:
+      props.viewModel.generateRandomInput(props.algorithmType);
+  }
+}
+
+onMounted(() => {
+  props.viewModel.generateRandomInput(props.algorithmType);
+});
 </script>
 
 <template>
@@ -69,7 +80,7 @@ function forward() {
         :id="WidgetType.VISUALIZATION"
         :loading="loading"
       >
-        <VisualizationArea
+        <VisualizationPanel
           v-if="viewModel.input.value"
           :preview-component="previewComponent"
           :playing="viewModel.playing.value"
@@ -81,6 +92,7 @@ function forward() {
           @forward="forward"
           @play="play"
           @pause="pause"
+          @menu-item-clicked="handleVisualizePanelMenuClick"
         />
       </GridItem>
 
@@ -92,20 +104,6 @@ function forward() {
         :id="WidgetType.LOG"
       >
         <Log :logs="viewModel.logs.value" />
-      </GridItem>
-
-      <GridItem
-        :x-coordinate="widgets[WidgetType.FORM].x"
-        :y-coordinate="widgets[WidgetType.FORM].y"
-        :width="widgets[WidgetType.FORM].w"
-        :height="widgets[WidgetType.FORM].h"
-        :id="WidgetType.FORM"
-        :loading="loading"
-      >
-        <DataGenerator
-          :form-component="formComponent"
-          @input-generated="generateSolution"
-        />
       </GridItem>
 
       <GridItem
