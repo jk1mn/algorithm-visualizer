@@ -11,7 +11,11 @@ export class GetThemeCase {
       return <Theme>enumSchema(Theme)
         .parse(LocalStorage.get(LocalStorageKey.DEFAULT_THEME));
     } catch {
-      return getThemePreference() || Theme.Dark;
+      try {
+        return getThemePreference() || Theme.Dark;
+      } catch {
+        return Theme.Dark;
+      }
     }
   }
 }
