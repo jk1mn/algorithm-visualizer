@@ -1,5 +1,7 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { AlgorithmCardList } from '@/modules/algorithm';
+</script>
 
 <template>
-  <v-container />
+  <AlgorithmCardList />
 </template>

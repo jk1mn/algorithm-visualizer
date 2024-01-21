@@ -1,14 +1,35 @@
 import type { ZodIssue } from 'zod';
 
-export class AppException extends Error {}
+enum Scope {
+  DEBUG = 'DEBUG',
+  USER = 'USER',
+}
 
-export class SchemaValidationException extends Error {
-  issues: ZodIssue[];
+export class ApplicationException extends Error {
+  private readonly scope: Scope;
 
-  constructor (issues: ZodIssue[]) {
-    super();
-    this.issues = issues;
+  constructor (message: string, scope: Scope = Scope.DEBUG, options?: ErrorOptions) {
+    super(message, options);
+    this.scope = scope;
+  }
+
+  isUserError () {
+    return this.scope === Scope.USER;
   }
 }
 
-export class FailedImportException extends AppException {}
+export class UserException extends ApplicationException {
+  constructor (message: string, options?: ErrorOptions) {
+    super(message, Scope.USER, options);
+  }
+}
+
+export class SchemaValidationException extends ApplicationException {
+  // todo: it must not depend on Zod
+  issues: ZodIssue[];
+
+  constructor (message: string, issues: ZodIssue[]) {
+    super(message);
+    this.issues = issues;
+  }
+}

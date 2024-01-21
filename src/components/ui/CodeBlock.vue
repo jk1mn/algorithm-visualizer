@@ -1,22 +1,24 @@
 <script setup lang="ts">
-import { ref, watch, onMounted, nextTick } from 'vue';
+import { nextTick, onMounted, ref, watch, computed } from 'vue';
 import Prism from 'prismjs';
 import 'prismjs/plugins/line-highlight/prism-line-highlight.js';
 import 'prismjs/plugins/normalize-whitespace/prism-normalize-whitespace.js';
-
-import 'prismjs/themes/prism-tomorrow.css';
 import 'prismjs/plugins/line-highlight/prism-line-highlight.css';
 
-import type { LinesRange } from '@/modules/algorithm/domain/types';
+import { useThemeProvider } from '@/modules/theme';
+import type { HighlightedCodeLines } from '@/modules/algorithm-visualization';
 
 const props = withDefaults(defineProps<{
   language?: string;
   code: string;
-  highlightedLines?: LinesRange;
+  highlightedLines?: HighlightedCodeLines;
 }>(), {
   language: 'javascript',
   highlightedLines: () => [],
 });
+
+const theme = useThemeProvider();
+const themeClass = computed(() => `theme-${theme.currentTheme.toLowerCase()}`);
 
 const preElement = ref<HTMLElement>();
 const codeElement = ref<Element>();
@@ -33,7 +35,7 @@ onMounted(() => {
   highlight();
 });
 
-watch(() => props.highlightedLines, (current: LinesRange, previous: LinesRange) => {
+watch(() => props.highlightedLines, (current: HighlightedCodeLines, previous: HighlightedCodeLines) => {
   if (previous.length) {
     const prevLines = preElement.value?.querySelectorAll(`.line-highlight[data-range]`);
     prevLines?.forEach(line => {
@@ -41,8 +43,10 @@ watch(() => props.highlightedLines, (current: LinesRange, previous: LinesRange) 
     });
   }
 
-  const highlightLines = Prism.plugins.lineHighlight.highlightLines(preElement.value, current.join());
-  highlightLines();
+  if (current.length) {
+    const highlightLines = Prism.plugins.lineHighlight.highlightLines(preElement.value, current.join());
+    highlightLines();
+  }
 });
 
 watch(() => props.code, () => {
@@ -58,6 +62,7 @@ function highlight () {
   <pre
     ref="preElement"
     class="line-numbers"
+    :class="themeClass"
     :data-line="highlightedLines.join()"
   >
     <code
@@ -70,6 +75,17 @@ function highlight () {
 </template>
 
 <style lang="scss">
+@use 'sass:meta';
+
+//todo: load themes lazily
+.theme-dark {
+  @include meta.load-css('prismjs/themes/prism-tomorrow.css');
+}
+
+.theme-light {
+  @include meta.load-css('prismjs/themes/prism.css');
+}
+
 pre[data-line] {
   height: 100%;
   margin: 0;

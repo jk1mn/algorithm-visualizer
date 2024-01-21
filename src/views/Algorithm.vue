@@ -1,84 +1,39 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia';
-import { useRoute } from 'vue-router';
-import { computed, ref, watchEffect, markRaw, onBeforeMount } from 'vue';
+import { ref, onBeforeMount } from 'vue';
+import { useRouter, useRoute, onBeforeRouteUpdate } from 'vue-router';
 
-import { useWidgetStore } from '@/modules/widget/store';
-import { AlgorithmRoute } from '@/router/algorithm-routes';
-import { GridEvent } from '@/components/ui/grid/event-bus';
-import gridEventBus from '@/components/edit-grid/event-bus';
-import EditGridPanel from '@/components/edit-grid/Panel.vue';
-import Visualizer from '@/modules/algorithm/presentation/view/Visualizer.vue';
-import { FailedImportException } from '@/shared/exceptions';
-
-const store = useWidgetStore();
-
-const { isEditing, widgets } = storeToRefs(store);
+import { Visualization } from '@/modules/algorithm-visualization';
+import { GetAlgorithmsCase, type Algorithm } from '@/modules/algorithm';
 
 const route = useRoute();
-const algRoute = computed(() =>
-  AlgorithmRoute.current(route.params.name as string)
-);
+const router = useRouter();
 
-const preview = ref(null);
-const form = ref(null);
-const info = ref(null);
-const loading = ref(false);
+const usecase = new GetAlgorithmsCase();
+const algorithm = ref<Algorithm | null>(null);
 
-watchEffect(() => {
-  loading.value = true;
+onBeforeMount(async () => {
+  algorithm.value = await usecase.getOne(route.params.name as string);
 
-  Promise.all([
-    algRoute.value?.getPreview(),
-    algRoute.value?.getForm(),
-    algRoute.value?.getInfo(),
-  ])
-    .then(components => {
-      preview.value = markRaw(components[0].default);
-      form.value = markRaw(components[1].default);
-      info.value = markRaw(components[2].default);
-    })
-    .catch((e) => {
-      throw new FailedImportException(e?.message, { cause: e });
-    })
-    .finally(() => {
-      loading.value = false;
-    });
+  if (!algorithm.value) {
+    await router.replace({ name: 'not-found' });
+  }
 });
 
-onBeforeMount(() => {
-  store.initializeWidgets();
+onBeforeRouteUpdate(async (to, from, next) => {
+  algorithm.value = await usecase.getOne(to.params.name as string);
+
+  if (algorithm.value) {
+    next();
+  } else {
+    next({ name: 'not-found' });
+  }
 });
-
-function saveGrid () {
-  gridEventBus.emit(GridEvent.SAVE_CLICK);
-}
-
-function cancelEditingGrid () {
-  gridEventBus.emit(GridEvent.CANCEL_CLICK);
-}
-
-function useDefaultWidgets () {
-  gridEventBus.emit(GridEvent.DEFAULT_CLICK);
-}
 </script>
 
 <template>
-  <Visualizer
-    :header="algRoute.name"
-    :algorithm-type="algRoute.type"
-    :form-component="form"
-    :preview-component="preview"
-    :info-component="info"
-    :loading="loading"
-    :widgets="widgets"
-    :is-editing-grid="isEditing"
-    :grid-event-bus="gridEventBus"
-  />
-  <EditGridPanel
-    :visible="isEditing"
-    @submit="saveGrid"
-    @cancel="cancelEditingGrid"
-    @use-default="useDefaultWidgets"
+  <Visualization
+    v-if="algorithm"
+    :header="algorithm.name"
+    :algorithm-type="algorithm.type"
   />
 </template>
