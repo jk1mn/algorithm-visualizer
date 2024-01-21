@@ -1,6 +1,6 @@
 export const randomSortedList = (minLength: number, maxLength: number) => {
   const length = Math.floor(
-    Math.random() * (maxLength - minLength + 1) + minLength
+    Math.random() * (maxLength - minLength + 1) + minLength,
   );
   const list = [Math.ceil(Math.random() * 10)];
   for (let i = 1; i < length; i++) {
@@ -24,7 +24,7 @@ export const range = (start: number, end: number) => {
 export const randomNumbers = (
   minLength: number,
   maxLength: number,
-  maxValue: number
+  maxValue: number,
 ): number[] =>
   new Array(Math.floor(Math.random() * (maxLength - minLength + 1) + minLength))
     .fill(undefined)
@@ -34,4 +34,8 @@ export const swap = (array: number[], index1: number, index2: number) => {
   const tmp = array[index1];
   array[index1] = array[index2];
   array[index2] = tmp;
+};
+
+export const intersect = <T = any> (array1: T[], array2: T[]): T[] => {
+  return array1.filter(el => array2.includes(el));
 };

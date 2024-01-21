@@ -1,3 +1,3 @@
 export enum LocalStorageKey {
-  WIDGET = 'alg-vis__widget',
+  DEFAULT_THEME = 'alg-vis__default-theme',
 }

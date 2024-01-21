@@ -3,13 +3,13 @@ import type { ZodType } from 'zod';
 import { SchemaValidationException } from './exceptions';
 
 export abstract class Entity {
-  protected validate(): void {
+  protected validate (): void {
     const result = this.getSchema().safeParse(this);
 
     if (result.success === false) {
-      throw new SchemaValidationException(result.error.issues);
+      throw new SchemaValidationException(result.error.message, result.error.issues);
     }
   }
 
-  protected abstract getSchema(): ZodType;
+  protected abstract getSchema (): ZodType;
 }

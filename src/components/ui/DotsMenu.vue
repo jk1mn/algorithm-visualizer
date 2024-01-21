@@ -1,4 +1,6 @@
 <script setup lang="ts" generic="T extends string">
+import Button from '@/components/ui/Button.vue';
+
 import type { MenuOptions } from './types';
 
 defineEmits<{
@@ -11,28 +13,26 @@ const props = defineProps<{
 </script>
 
 <template>
-<v-menu location="bottom right">
-  <template v-slot:activator="{ props }">
-    <v-btn
-      icon="mdi-dots-vertical"
-      density="compact"
-      size="small"
-      v-bind="props"
-    />
-  </template>
+  <v-menu location="bottom right">
+    <template v-slot:activator="{ props }">
+      <Button
+        icon="mdi-dots-vertical"
+        v-bind="props"
+      />
+    </template>
 
-  <v-list>
-    <v-list-item
-      v-for="option of props.options"
-      :key="option.value"
-      :value="option.value"
-      density="compact"
-      @click="$emit('menu-item-clicked', option.value)"
-    >
-      <v-list-item-title class="menu-item-title">{{ option.label }}</v-list-item-title>
-    </v-list-item>
-  </v-list>
-</v-menu>
+    <v-list>
+      <v-list-item
+        v-for="option of props.options"
+        :key="option.value"
+        :value="option.value"
+        density="compact"
+        @click="$emit('menu-item-clicked', option.value)"
+      >
+        <v-list-item-title class="menu-item-title">{{ option.label }}</v-list-item-title>
+      </v-list-item>
+    </v-list>
+  </v-menu>
 </template>
 
 <style lang="scss" scoped>

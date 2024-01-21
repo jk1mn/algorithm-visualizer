@@ -18,6 +18,6 @@ defineProps<{
 .ui-app-link {
   display: inline-block;
   text-decoration: none;
-  color: #000;
+  color: inherit;
 }
 </style>

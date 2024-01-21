@@ -1,3 +1,4 @@
+// todo: move file from here
 export enum MenuOption {
   RANDOMIZE = 'randomize',
 }
