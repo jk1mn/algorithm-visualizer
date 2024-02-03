@@ -44,7 +44,7 @@ function handleVisualizePanelMenuClick (event: MenuOption) {
   }
 }
 
-let VisualizationComponent = null;
+let VisualizationComponent: typeof Visualization[AlgorithmType] | null = null;
 
 watch(() => props.algorithmType, prepareVisualization);
 onMounted(prepareVisualization);
@@ -63,7 +63,7 @@ const visualizationExpanded = ref<boolean>(false);
     <VisualizationPanel
       v-if="viewModel.input.value"
       class="visualize-panel"
-      :preview-component="VisualizationComponent"
+      :preview-component="VisualizationComponent!"
       :playing="viewModel.playing.value"
       :scale="viewModel.scale.value"
       :input-data="viewModel.input.value"

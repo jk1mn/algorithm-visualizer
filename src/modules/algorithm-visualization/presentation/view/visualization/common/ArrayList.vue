@@ -2,7 +2,7 @@
 import { ref, computed } from 'vue';
 
 defineSlots<{
-  item (props: { value: number, height: number, index: number }): any;
+  item (props: { value: number, height: number, index: number, key: number }): unknown;
 }>();
 
 const props = defineProps<{

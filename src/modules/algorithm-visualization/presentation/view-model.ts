@@ -12,7 +12,7 @@ import { InputDataSource } from '@/modules/algorithm-visualization';
 
 export class ViewModel {
   private interval = 1000;
-  private intervalId: number | undefined;
+  private intervalId: ReturnType<typeof setInterval> | undefined;
 
   input = ref<InputData | null>(null);
   solution = ref<Solution | null>(null);

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onBeforeMount, ref } from 'vue';
-import { Algorithm, GetAlgorithmsCase } from '@/modules/algorithm';
+import { type Algorithm, GetAlgorithmsCase } from '@/modules/algorithm';
 
 import Card from './card/Card.vue';
 

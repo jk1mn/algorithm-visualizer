@@ -2,7 +2,7 @@
 import { ref, toRef, watch, computed } from 'vue';
 
 import { swap } from '@/utils/arrays';
-import { SortingAlgorithmInput, SortingAlgorithmStep } from '@/modules/algorithm-visualization';
+import type { SortingAlgorithmInput, SortingAlgorithmStep } from '@/modules/algorithm-visualization';
 
 import ArrayList from './common/ArrayList.vue';
 import ArrayItem from './common/ArrayItem.vue';
@@ -27,8 +27,8 @@ watch(
   },
 );
 
-const listRef = ref<ArrayList | null>(null);
-const scalableElement = computed<HTMLElement | null>(() => listRef.value.listElement);
+const listRef = ref<typeof ArrayList | null>(null);
+const scalableElement = computed<HTMLElement | null>(() => listRef.value?.listElement);
 
 defineExpose({
   scalableElement,

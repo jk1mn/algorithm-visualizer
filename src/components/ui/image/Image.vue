@@ -14,7 +14,7 @@ const loading = ref<boolean>(true);
 </script>
 
 <template>
-  <img v-show="!loading" :src="src" :alt="alt" :width="width" :height="height" loading="lazy">
+  <img v-show="!loading" :src="src || undefined" :alt="alt" :width="width" :height="height" loading="lazy">
   <Placeholder v-if="loading || !src" :height="`${height}px`" />
 </template>
 

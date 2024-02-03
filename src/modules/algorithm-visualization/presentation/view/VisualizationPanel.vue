@@ -1,13 +1,15 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="T extends AlgorithmType">
 import { type ComponentPublicInstance, ref, onMounted, computed, watch, nextTick } from 'vue';
 import { useResizeObserver } from '@vueuse/core';
 
 import Panel from '@/components/ui/panel/Panel.vue';
 import Button from '@/components/ui/Button.vue';
-import { InputData, Step } from '@/modules/algorithm-visualization';
+import type { InputData, Step } from '@/modules/algorithm-visualization';
+import type { AlgorithmType } from '@/modules/algorithm';
 import eventBus, { Event } from '@/shared/event-bus';
 import { round } from '@/utils/number';
 
+import * as Visualization from './visualization';
 import ToolBar from './toolbar/VisualizationToolBar.vue';
 import { menuOptions } from '../../../algorithm/presentation/constants';
 import type { MenuOption } from '../../../algorithm/presentation/constants';
@@ -23,7 +25,7 @@ defineEmits<{
 }>();
 
 const props = defineProps<{
-  previewComponent: ComponentPublicInstance;
+  previewComponent: typeof Visualization[T];
   playing: boolean;
   inputData: InputData;
   steps: Step[];
@@ -71,6 +73,7 @@ let animationRequestId = 0;
 function handleVisualizationResize (animationDuration = 0) {
   cancelAnimationFrame(animationRequestId);
 
+  // @ts-expect-error scalableElement exists
   const elementWidth = component.value!.scalableElement.scrollWidth;
 
   let start = 0;
@@ -113,7 +116,7 @@ function handleVisualizationResize (animationDuration = 0) {
     :style="transform"
     :title="algorithm"
     :menu-options="menuOptions"
-    @menu-item-clicked="$emit('menu-item-clicked', $event)"
+    @menu-item-clicked="$emit('menu-item-clicked', $event as MenuOption)"
   >
     <template #actions>
       <Button v-if="fullscreen" icon="mdi-fullscreen-exit" @click="toggleFullscreen(false)" />

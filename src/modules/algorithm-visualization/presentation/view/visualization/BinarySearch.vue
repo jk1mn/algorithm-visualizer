@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, type ComponentPublicInstance } from 'vue';
-import { SearchAlgorithmInput, SearchAlgorithmStep } from '@/modules/algorithm-visualization';
+import type { SearchAlgorithmInput, SearchAlgorithmStep } from '@/modules/algorithm-visualization';
 
 import ArrayList from './common/ArrayList.vue';
 import ArrayItem from './common/ArrayItem.vue';
