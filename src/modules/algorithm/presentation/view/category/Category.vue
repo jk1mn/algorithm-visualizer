@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, type StyleValue } from 'vue';
 
 import { AlgorithmCategoryType } from '@/modules/algorithm';
-
-import { Category } from './definitions';
 
 const props = defineProps<{
   name: string,
@@ -14,7 +12,7 @@ const cssClass = computed<string>(() => props.type
   .toLowerCase()
   .replaceAll(' ', '-'));
 
-const style = computed<Category | null>(() => {
+const style = computed<StyleValue | null>(() => {
   switch (props.type) {
     case AlgorithmCategoryType.Search:
     case AlgorithmCategoryType.Sorting:

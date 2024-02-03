@@ -1,14 +1,15 @@
-<script setup lang="ts" generic="T extends string">
+<script setup lang="ts">
 import { computed } from 'vue';
 
 import { useThemeProvider } from '@/modules/theme';
+import type { MenuOption } from '@/modules/algorithm/presentation/constants';
 
 import DotsMenu from '../DotsMenu.vue';
 import type { MenuOptions } from '../types';
 import panelTheme from './theme';
 
 defineEmits<{
-  (e: 'menu-item-clicked', value: T): void;
+  (e: 'menu-item-clicked', value: MenuOption): void;
 }>();
 
 const props = withDefaults(defineProps<{
@@ -44,7 +45,7 @@ const themedStyle = computed(() => theme.getThemedStyles(panelTheme));
         <DotsMenu
           v-if="menuOptions.length"
           :options="menuOptions"
-          @menu-item-clicked="$emit('menu-item-clicked', $event)"
+          @menu-item-clicked="$emit('menu-item-clicked', $event as MenuOption)"
         />
       </div>
     </div>

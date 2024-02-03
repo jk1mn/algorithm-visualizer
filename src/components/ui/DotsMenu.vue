@@ -1,10 +1,11 @@
-<script setup lang="ts" generic="T extends string">
+<script setup lang="ts">
 import Button from '@/components/ui/Button.vue';
+import type { MenuOption } from '@/modules/algorithm/presentation/constants';
 
 import type { MenuOptions } from './types';
 
 defineEmits<{
-  (e: 'menu-item-clicked', value: T): void;
+  (e: 'menu-item-clicked', value: MenuOption): void;
 }>();
 
 const props = defineProps<{
@@ -27,7 +28,7 @@ const props = defineProps<{
         :key="option.value"
         :value="option.value"
         density="compact"
-        @click="$emit('menu-item-clicked', option.value)"
+        @click="$emit('menu-item-clicked', option.value as MenuOption)"
       >
         <v-list-item-title class="menu-item-title">{{ option.label }}</v-list-item-title>
       </v-list-item>
